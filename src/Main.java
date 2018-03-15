@@ -36,21 +36,26 @@ class ManageBank {
     - any additional ones needed for E.C. 
 
     Initialize an instance variable for the user's name. */
-    Scanner userInput = new Scanner(System.in);
-    String nameInput = userInput.nextLine();
-
-    static ArrayList<String> accounts = new ArrayList<String>();
     private String name;
+
+    ArrayList<String> accounts = new ArrayList<>();
 
 
     public void welcome() {
         /* Welcome an account holder to your bank - Replace with more descriptive
         comment about purpose of method */
+        System.out.println("Hello, what is your name?");
+        Scanner userInput = new Scanner(System.in);
+        name = userInput.next();
+        System.out.println("Hi " + name + ". Welcome to the bank!");
     }
 
     public void menu_select() {
         /* First menu of choices for user - Replace with more descriptive
         comment about purpose of method */
+        System.out.println("Would you like to make make a transaction?");
+        Scanner userInput = new Scanner(System.in);
+
     }
 
     public void open_acct() {
@@ -96,7 +101,7 @@ class Account {
     public Account(double bal) {
         /* Constructor; creates account object. Initializes the 
         object's balance & assigns account number. */
-        bal = balance;
+        balance = bal;
         numAccounts += 1;
         accountNumber = numAccounts;
     }
