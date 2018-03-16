@@ -14,8 +14,10 @@ class Main {
     
         You must write additional tests for Account class. */
 
+        Account test1 = new Account(0);
+
         //ManageBank test1 = new ManageBank();
-        // ManageBank test2 = new ManageBank();
+        //ManageBank test2 = new ManageBank();
         //ManageBank test3 = new ManageBank();
         //test1.welcome();
         //test1.menu_select();
@@ -38,7 +40,7 @@ class ManageBank {
     Initialize an instance variable for the user's name. */
     private String name;
 
-    ArrayList<String> accounts = new ArrayList<>();
+    static ArrayList<String> accounts = new ArrayList<>();
 
 
     public void welcome() {
@@ -53,19 +55,41 @@ class ManageBank {
     public void menu_select() {
         /* First menu of choices for user - Replace with more descriptive
         comment about purpose of method */
-        System.out.println("Would you like to make make a transaction?");
+        System.out.println("Choose from the following");
+        System.out.println("Transaction, open account, or exit to main menu.");
         Scanner userInput = new Scanner(System.in);
-
+        String option = userInput.nextLine();
+        if (option.equalsIgnoreCase("transaction")){
+            transact_acct();
+        }
+        else if (option.equalsIgnoreCase("open account")){
+            open_acct();
+        }
+        else if(option.equalsIgnoreCase("exit to main menu")){
+            welcome();
+        }
+        else{
+            System.out.println("Sorry, the option you entered is invalid. Please try again.");
+            menu_select();
+        }
     }
 
     public void open_acct() {
         /* One option for user - Replace with more descriptive
         comment about purpose of method */
+        System.out.println("Please enter the name for the account you want to newly create.");
+        Scanner userInput = new Scanner(System.in);
+        name = userInput;
+        accounts.add(name);
+        Account name = new Account(0);
+        System.out.println("Your account number is " + name.accountNumber);
+
+        welcome();
     }
 
     public void transact_acct() {
         /* Another, more involved option for user - Replace with more
-        descriptive comment aobut purpose of method */
+        descriptive comment about purpose of method */
         
         /* Ask user for account number. Keep looping through options
         until user decides to exit. 
@@ -77,7 +101,28 @@ class ManageBank {
         
         You will need to use casting here to access the user's account directly
         from the ArrayList.*/
+        System.out.println("What is your account number?");
+        Scanner userInput = new Scanner(System.in);
+        int accountNumber = userInput.nextInt();
+        for(int i = 0; i < accounts.size(); i++){
+            if ((i == accountNumber) && (accounts.get(i) == name)){
+                System.out.println("Would you like to deposit, withdraw, view account summary, or exit to main menu?");
+                Scanner userChoice = new Scanner(System.in);
+                String choice = userChoice.nextLine();
+                if (choice.equalsIgnoreCase("withdraw")){
 
+                }
+                else if (choice.equalsIgnoreCase("deposit")){
+
+                }
+                else if (choice.equalsIgnoreCase("view account summary")){
+
+                }
+                else if (choice.equalsIgnoreCase("exit to main menu")){
+                    welcome();
+                }
+            }
+        }
     }
 }
 
@@ -93,7 +138,7 @@ class Account {
     use this number to help assign a unique account number. */
 
     private double balance;
-    private int accountNumber;
+    public int accountNumber;
     private ArrayList<String> transactions = new ArrayList<>();
 
     static int numAccounts;
@@ -102,8 +147,8 @@ class Account {
         /* Constructor; creates account object. Initializes the 
         object's balance & assigns account number. */
         balance = bal;
-        numAccounts += 1;
         accountNumber = numAccounts;
+        numAccounts += 1;
     }
 
     public void get_acct_num() {
