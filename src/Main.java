@@ -14,13 +14,10 @@ class Main {
     
         You must write additional tests for Account class. */
 
-        Account test1 = new Account(0);
-
-        //ManageBank test1 = new ManageBank();
+        ManageBank test1 = new ManageBank();
         //ManageBank test2 = new ManageBank();
         //ManageBank test3 = new ManageBank();
-        //test1.welcome();
-        //test1.menu_select();
+        test1.welcome();
         //test2.welcome();
         //test2.menu_select();
         //test3.welcome();
@@ -40,7 +37,7 @@ class ManageBank {
     Initialize an instance variable for the user's name. */
     private String name;
 
-    static ArrayList<String> accounts = new ArrayList<>();
+    static ArrayList users = new ArrayList();
 
 
     public void welcome() {
@@ -50,22 +47,23 @@ class ManageBank {
         Scanner userInput = new Scanner(System.in);
         name = userInput.next();
         System.out.println("Hi " + name + ". Welcome to the bank!");
+        menu_select();
     }
 
     public void menu_select() {
         /* First menu of choices for user - Replace with more descriptive
         comment about purpose of method */
-        System.out.println("Choose from the following");
-        System.out.println("Transaction, open account, or exit to main menu.");
+        System.out.println("Choose from the following (enter the number)");
+        System.out.println("1. Transaction, 2. open account, or 3. exit to main menu.");
         Scanner userInput = new Scanner(System.in);
-        String option = userInput.nextLine();
-        if (option.equalsIgnoreCase("transaction")){
+        int option = userInput.nextInt();
+        if (option == 1){
             transact_acct();
         }
-        else if (option.equalsIgnoreCase("open account")){
+        else if (option == 2){
             open_acct();
         }
-        else if(option.equalsIgnoreCase("exit to main menu")){
+        else if(option == 3){
             welcome();
         }
         else{
@@ -77,14 +75,25 @@ class ManageBank {
     public void open_acct() {
         /* One option for user - Replace with more descriptive
         comment about purpose of method */
-        System.out.println("Please enter the name for the account you want to newly create.");
+        System.out.println("How much would you like to deposit as your initial balance?");
         Scanner userInput = new Scanner(System.in);
-        name = userInput;
-        accounts.add(name);
-        Account name = new Account(0);
-        System.out.println("Your account number is " + name.accountNumber);
-
-        welcome();
+        double bal = userInput.nextDouble();
+        Account acc = new Account(bal);
+        users.add(acc);
+        System.out.println("Your account number is " + acc.accountNumber);
+        System.out.println("Would you like to make a 1. transaction or 2. exit to main menu?");
+        Scanner temp_choice = new Scanner(System.in);
+        int choice = temp_choice.nextInt();
+        if (choice == 1){
+            transact_acct();
+        }
+        else if (choice == 2){
+            welcome();
+        }
+        else{
+            System.out.println("Sorry, the option you entered is invalid. Exiting to main menu.");
+            menu_select();
+        }
     }
 
     public void transact_acct() {
@@ -101,28 +110,45 @@ class ManageBank {
         
         You will need to use casting here to access the user's account directly
         from the ArrayList.*/
-        System.out.println("What is your account number?");
+        System.out.println("Please enter your bank number to make a transaction.");
         Scanner userInput = new Scanner(System.in);
-        int accountNumber = userInput.nextInt();
-        for(int i = 0; i < accounts.size(); i++){
-            if ((i == accountNumber) && (accounts.get(i) == name)){
-                System.out.println("Would you like to deposit, withdraw, view account summary, or exit to main menu?");
+        int accNum = userInput.nextInt();
+        for (int i = 0; i <= Account.numAccounts; i++){
+            if (accNum == i){
+                System.out.println("Would you like to 1. deposit, 2. withdraw from your account, 3. view your account summary 4. exit to menu (enter the number next to the options.");
                 Scanner userChoice = new Scanner(System.in);
-                String choice = userChoice.nextLine();
-                if (choice.equalsIgnoreCase("withdraw")){
-
+                int choice = userChoice.nextInt();
+                if (choice == 1){
+                    System.out.println("How much would you like to deposit?");
+                    Scanner temp_amt = new Scanner(System.in);
+                    double amt = temp_amt.nextDouble();
+                    Account temp_acc = (Account) users.get(i);
+                    temp_acc.deposit(amt);
+                    menu_select();
                 }
-                else if (choice.equalsIgnoreCase("deposit")){
-
+                else if (choice == 2){
+                    System.out.println("How much would you like to withdraw?");
+                    Scanner temp_amt = new Scanner(System.in);
+                    double amt = temp_amt.nextDouble();
+                    Account temp_acc = (Account) users.get(i);
+                    temp_acc.withdraw(amt);
+                    menu_select();
                 }
-                else if (choice.equalsIgnoreCase("view account summary")){
-
+                else if (choice == 3){
+                    Account temp_acc = (Account) users.get(i);
+                    temp_acc.account_summary();
+                    menu_select();
                 }
-                else if (choice.equalsIgnoreCase("exit to main menu")){
-                    welcome();
+                else if (choice == 4){
+                    menu_select();
+                }
+                else {
+                    System.out.println("That option is invalid. Please try again.");
+                    transact_acct();
                 }
             }
         }
+
     }
 }
 
@@ -139,7 +165,7 @@ class Account {
 
     private double balance;
     public int accountNumber;
-    private ArrayList<String> transactions = new ArrayList<>();
+    private ArrayList<String> transactions = new ArrayList<String>();
 
     static int numAccounts;
 
@@ -151,14 +177,14 @@ class Account {
         numAccounts += 1;
     }
 
-    public void get_acct_num() {
+    public int get_acct_num() {
         /* Accessor; get the account's number. */
-        System.out.println("The account number is " + accountNumber);
+        return accountNumber;
     }
 
-    public void get_acct_bal() {
+    public double get_acct_bal() {
         /* Accessor; get the account's balance. */
-        System.out.println("The account balance is " + balance);
+        return balance;
     }
 
     public void deposit(double amt) {
@@ -168,6 +194,7 @@ class Account {
         balance += amt;
         transactions.add(amt + " was deposited.");
         System.out.println(amt + " was deposited.");
+
     }
 
     public void withdraw(double amt) {
