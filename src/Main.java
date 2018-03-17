@@ -32,8 +32,7 @@ class ManageBank {
     /* Initialize class variables here:
     - userInput variable (see PWD 01 slides) in order to accept user responses
     - ArrayList to track all bank accounts created
-    - any additional ones needed for E.C. 
-
+    - any additional ones needed for E.C.
     Initialize an instance variable for the user's name. */
     private String name;
 
@@ -99,15 +98,15 @@ class ManageBank {
     public void transact_acct() {
         /* Another, more involved option for user - Replace with more
         descriptive comment about purpose of method */
-        
+
         /* Ask user for account number. Keep looping through options
-        until user decides to exit. 
-        
-        Keep temporary variables to track if the user inputs an integer, 
-        double, or String. 
-        
-        Keep another variable to track the user's option choice. 
-        
+        until user decides to exit.
+
+        Keep temporary variables to track if the user inputs an integer,
+        double, or String.
+
+        Keep another variable to track the user's option choice.
+
         You will need to use casting here to access the user's account directly
         from the ArrayList.*/
         System.out.println("Please enter your bank number to make a transaction.");
@@ -154,12 +153,11 @@ class ManageBank {
 
 class Account {
     /* Replace with descriptive comment of class purpose. */
-    
+
     /* Initialize instance variables here:
     - balance (what data type should this be?)
     - account number
-    - transaction log - must be ArrayList (see PWD 01 slides) 
-
+    - transaction log - must be ArrayList (see PWD 01 slides)
     Initialize a class variable for the number of accounts. You should
     use this number to help assign a unique account number. */
 
