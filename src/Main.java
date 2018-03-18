@@ -37,7 +37,7 @@ class ManageBank {
     private String name;
 
     static ArrayList users = new ArrayList();
-
+    static ArrayList<String> userPasswords = new ArrayList<String>();
 
     public void welcome() {
         /* Welcome an account holder to your bank - Replace with more descriptive
@@ -74,12 +74,18 @@ class ManageBank {
     public void open_acct() {
         /* One option for user - Replace with more descriptive
         comment about purpose of method */
+        System.out.println("Enter a password for your account.");
+        Scanner temp_pass = new Scanner(System.in);
+        String pass = temp_pass.nextLine();
+        userPasswords.add(pass);
+
         System.out.println("How much would you like to deposit as your initial balance?");
         Scanner userInput = new Scanner(System.in);
         double bal = userInput.nextDouble();
         Account acc = new Account(bal);
         users.add(acc);
         System.out.println("Your account number is " + acc.accountNumber);
+
         System.out.println("Would you like to make a 1. transaction or 2. exit to main menu?");
         Scanner temp_choice = new Scanner(System.in);
         int choice = temp_choice.nextInt();
@@ -112,7 +118,17 @@ class ManageBank {
         System.out.println("Please enter your bank number to make a transaction.");
         Scanner userInput = new Scanner(System.in);
         int accNum = userInput.nextInt();
-        for (int i = 0; i <= Account.numAccounts; i++){
+
+        System.out.println("Enter the password associated with the account number.");
+        Scanner temp_pass = new Scanner(System.in);
+        String pass = temp_pass.nextLine();
+
+        if (pass != userPasswords.get(accNum-1)){
+            System.out.println("The password you entered is invalid. Returning to main menu.");
+            menu_select();
+        }
+
+        for (int i = 1; i <= Account.numAccounts; i++){
             if (accNum == i){
                 System.out.println("Would you like to 1. deposit, 2. withdraw from your account, 3. view your account summary 4. exit to menu (enter the number next to the options.");
                 Scanner userChoice = new Scanner(System.in);
@@ -143,8 +159,12 @@ class ManageBank {
                 }
                 else {
                     System.out.println("That option is invalid. Please try again.");
-                    transact_acct();
+                    menu_select();
                 }
+            }
+            else{
+                System.out.println("There is no account associated with that account number.");
+                menu_select();
             }
         }
 
@@ -171,8 +191,8 @@ class Account {
         /* Constructor; creates account object. Initializes the 
         object's balance & assigns account number. */
         balance = bal;
-        accountNumber = numAccounts;
         numAccounts += 1;
+        accountNumber = numAccounts;
     }
 
     public int get_acct_num() {
