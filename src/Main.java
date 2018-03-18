@@ -118,7 +118,12 @@ class ManageBank {
         System.out.println("Please enter your bank number to make a transaction.");
         Scanner userInput = new Scanner(System.in);
         int accNum = userInput.nextInt();
-
+        if (accNum > users.size()){
+            System.out.println("There is no account associated with the account number entered.");
+            System.out.println("Returning to main menu...");
+            System.out.println();
+            menu_select();
+        }
         System.out.println("Enter the password associated with the account number.");
         Scanner temp_pass = new Scanner(System.in);
         String pass = temp_pass.nextLine();
@@ -161,10 +166,6 @@ class ManageBank {
                     System.out.println("That option is invalid. Please try again.");
                     menu_select();
                 }
-            }
-            else{
-                System.out.println("There is no account associated with that account number.");
-                menu_select();
             }
         }
 
