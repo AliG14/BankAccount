@@ -142,7 +142,7 @@ class ManageBank {
                     System.out.println("How much would you like to deposit?");
                     Scanner temp_amt = new Scanner(System.in);
                     double amt = temp_amt.nextDouble();
-                    Account temp_acc = (Account) users.get(i);
+                    Account temp_acc = (Account) users.get(i-1);
                     temp_acc.deposit(amt);
                     menu_select();
                 }
@@ -150,12 +150,12 @@ class ManageBank {
                     System.out.println("How much would you like to withdraw?");
                     Scanner temp_amt = new Scanner(System.in);
                     double amt = temp_amt.nextDouble();
-                    Account temp_acc = (Account) users.get(i);
+                    Account temp_acc = (Account) users.get(i-1);
                     temp_acc.withdraw(amt);
                     menu_select();
                 }
                 else if (choice == 3){
-                    Account temp_acc = (Account) users.get(i);
+                    Account temp_acc = (Account) users.get(i-1);
                     temp_acc.account_summary();
                     menu_select();
                 }
@@ -211,8 +211,8 @@ class Account {
         the account balanace. Add this deposit transaction to the
         transaction log & print out a description. */
         balance += amt;
-        transactions.add(amt + " was deposited.");
-        System.out.println(amt + " was deposited.");
+        transactions.add("$" + amt + " was deposited.");
+        System.out.println("$" + amt + " was deposited.");
 
     }
 
@@ -222,8 +222,8 @@ class Account {
         from the account. Add this withdraw transaction to the
         transaction log & print out a description. */
         balance -= amt;
-        transactions.add(amt + " was withdrawn.");
-        System.out.println(amt + " was withdrawn.");
+        transactions.add("$" + amt + " was withdrawn.");
+        System.out.println("$" + amt + " was withdrawn.");
     }
 
     public void account_summary() {
