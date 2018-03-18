@@ -123,7 +123,7 @@ class ManageBank {
         Scanner temp_pass = new Scanner(System.in);
         String pass = temp_pass.nextLine();
 
-        if (pass != userPasswords.get(accNum-1)){
+        if (!pass.equals(userPasswords.get(accNum - 1))) {
             System.out.println("The password you entered is invalid. Returning to main menu.");
             menu_select();
         }
@@ -232,11 +232,14 @@ class Account {
         
         Each transaction should print out on a separate line. 
         Hint: See Lab 5.3 Starter File A, check_schedule(), for hints. */
+        System.out.println("Account number: " + get_acct_num());
+        System.out.println();
+        System.out.println("Current balance: &" + get_acct_num());
+        System.out.println();
         System.out.println("Transactions Log");
         System.out.println("________________");
         for (String logs : transactions){
             System.out.println(logs);
         }
-
     }
 }
