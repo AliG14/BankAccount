@@ -4,9 +4,9 @@
 
 import java.util.*;
 
-class Main {
+class Main_old {
 
-  public static void main(String[] args) {
+  public static void main(final String... args) {
 
     // Object creation #1
         /* Uncomment the following lines of code as needed to test your code
