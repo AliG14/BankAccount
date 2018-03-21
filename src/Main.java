@@ -27,7 +27,7 @@ class Main {
 
 class ManageBank {
     /*
-    Welcomes the user, opens the menu, handles creating new accounts, and the process of
+    Welcomes the user, opens the menu, handles creating new accounts, and deals with the process of
     interacting with each account
 
      Initialize class variables here:
