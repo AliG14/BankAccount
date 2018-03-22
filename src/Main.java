@@ -202,6 +202,11 @@ class ManageBank {
 
                 if (!answer.equals(securityA.get(accNum - 1))) { //Checks to see if the answer is correct
                     System.out.println("Password reset failed. Incorrect answer entered. Please try again another time.");
+                    /*
+                    Normally, the next line of code would not be included, but since there is no cool-down
+                    on password attempts, it's best to give the user another chance on the password. 
+                     */
+                    passwordAttempts.set(accNum-1, 0);
                     menu_select();
                 } else {
                     System.out.print("Please enter a new password: ");
