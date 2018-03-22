@@ -155,7 +155,7 @@ class ManageBank {
                 Scanner temp_pass = new Scanner(System.in);
                 String pass = temp_pass.nextLine();
 
-                if (!pass.equals(userPasswords.get(accNum - 1))) {
+                if (!pass.equals(userPasswords.get(accNum - 1))) { //Checks for password accuracy
                     System.out.println("The password you entered is invalid. Returning to main menu.");
                     passwordAttempts.set(accNum - 1, passwordAttempts.get(accNum - 1) + 1);
                     menu_select();
@@ -200,7 +200,7 @@ class ManageBank {
                 Scanner temp_ans = new Scanner(System.in);
                 String answer = temp_ans.nextLine();
 
-                if (!answer.equals(securityA.get(accNum - 1))) {
+                if (!answer.equals(securityA.get(accNum - 1))) { //Checks to see if the answer is correct
                     System.out.println("Password reset failed. Incorrect answer entered. Please try again another time.");
                     menu_select();
                 } else {
