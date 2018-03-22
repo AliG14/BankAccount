@@ -33,13 +33,18 @@ class ManageBank {
      Initialize class variables here:
         - input variable in order to accept user responses
         - ArrayList to track all bank accounts created
-        - Keeping track of passwords - E.C.
-    Initialize instance variable for the user's name.
+        - Keeps track of passwords - E.C.
+        - Keeps track of security Q and A - E.C
+    Instance variable initialized for the user's name.
      */
     private String name;
 
     static ArrayList users = new ArrayList();
-    static ArrayList<String> userPasswords = new ArrayList<String>();
+
+    static ArrayList<String> userPasswords = new ArrayList<String>(); //ArrayList stores passwords in plaintext
+    static ArrayList<String> securityQ = new ArrayList(); // ArrayList stores the string for the security questions
+    static ArrayList<String> securityA = new ArrayList(); // ArrayList stores the string for the security answers
+    static ArrayList<Integer> passwordAttempts = new ArrayList(); //stores amount of password attempts
 
     public void welcome() {
         //Welcomes an account holder to the bank - Takes input of name and greets them
@@ -73,11 +78,26 @@ class ManageBank {
     }
 
     public void open_acct() {
-        //One option for user - Creates an instance of account and enters it into the arrayList
+        /*
+        One option for user - Creates an instance of account and enters it into the arrayList
+        Adds one security question for the account.
+         */
         System.out.println("Enter a password for your account.");
         Scanner temp_pass = new Scanner(System.in);
         String pass = temp_pass.nextLine();
         userPasswords.add(pass);
+
+        System.out.println("Enter a security question for your account.");
+        Scanner temp_Q = new Scanner(System.in);
+        String question = temp_Q.nextLine();
+        securityQ.add(question);
+
+        System.out.println("Enter the answer to the question.");
+        Scanner temp_A = new Scanner(System.in);
+        String answer = temp_A.nextLine();
+        securityA.add(answer);
+
+        passwordAttempts.add(0);
 
         System.out.println("How much would you like to deposit as your initial balance?");
         double bal = doubleInput();
@@ -102,13 +122,11 @@ class ManageBank {
         Another, more involved option for user - Gives the options to deposit, withdraw,
         view the transaction log, or exit
 
-        Ask user for account number. Keep looping through options
+        Asks user for account number. Keeps looping through options
 		until user decides to exit.
-	    Keep temporary variables to track if the user inputs an integer,
+	    Keeps temporary variables to track if the user inputs an integer,
 		double, or String.
-		Keep another variable to track the user's option choice.
-		You will need to use casting here to access the user's account directly
-		from the ArrayList.
+		Tracks users option choice.
          */
         System.out.println("Please enter your bank number to make a transaction.");
         int accNum = intInput();
@@ -118,36 +136,69 @@ class ManageBank {
             System.out.println();
             menu_select();
         } else {
-            System.out.println("Enter the password associated with the account number.");
-            Scanner temp_pass = new Scanner(System.in);
-            String pass = temp_pass.nextLine();
+            /*
+            User is allotted 3 password attempts to enter password. This will continue as long as the
+            attempts have not exceeded 3 tries.
+             */
+            if (passwordAttempts.get(accNum - 1) < 3) { //
+                System.out.println("Enter the password associated with the account number.");
+                Scanner temp_pass = new Scanner(System.in);
+                String pass = temp_pass.nextLine();
 
-            if (!pass.equals(userPasswords.get(accNum - 1))) {
-                System.out.println("The password you entered is invalid. Returning to main menu.");
-                menu_select();
-            } else {
-                System.out.println("Would you like to 1. deposit, 2. withdraw from your account, 3. view your account summary 4. exit to menu.");
-                int choice = intInput();
-                if (choice == 1) {
-                    System.out.println("How much would you like to deposit?");
-                    double amt = doubleInput();
-                    Account temp_acc = (Account) users.get(accNum - 1);
-                    temp_acc.deposit(amt);
-                    menu_select();
-                } else if (choice == 2) {
-                    System.out.println("How much would you like to withdraw?");
-                    double amt = doubleInput();
-                    Account temp_acc = (Account) users.get(accNum - 1);
-                    temp_acc.withdraw(amt);
-                    menu_select();
-                } else if (choice == 3) {
-                    Account temp_acc = (Account) users.get(accNum - 1);
-                    temp_acc.account_summary();
-                    menu_select();
-                } else if (choice == 4) {
+                if (!pass.equals(userPasswords.get(accNum - 1))) {
+                    System.out.println("The password you entered is invalid. Returning to main menu.");
+                    passwordAttempts.set(accNum - 1, passwordAttempts.get(accNum - 1) + 1);
                     menu_select();
                 } else {
-                    System.out.println("That option is invalid. Please try again.");
+                    System.out.println("Would you like to 1. deposit, 2. withdraw from your account, 3. view your account summary 4. exit to menu.");
+                    int choice = intInput();
+                    if (choice == 1) {
+                        System.out.println("How much would you like to deposit?");
+                        double amt = doubleInput();
+                        Account temp_acc = (Account) users.get(accNum - 1);
+                        temp_acc.deposit(amt);
+                        menu_select();
+                    } else if (choice == 2) {
+                        System.out.println("How much would you like to withdraw?");
+                        double amt = doubleInput();
+                        Account temp_acc = (Account) users.get(accNum - 1);
+                        temp_acc.withdraw(amt);
+                        menu_select();
+                    } else if (choice == 3) {
+                        Account temp_acc = (Account) users.get(accNum - 1);
+                        temp_acc.account_summary();
+                        menu_select();
+                    } else if (choice == 4) {
+                        menu_select();
+                    } else {
+                        System.out.println("That option is invalid. Please try again.");
+                        menu_select();
+                    }
+                }
+            } else {
+                /*
+                If all password attempts are failed, the user will have to answer a security question
+                to reset password.
+                 */
+                System.out.println("You have entered the wrong password three times. Answer the security question to reset your password:");
+                System.out.println(securityQ.get(accNum - 1));
+
+                Scanner temp_ans = new Scanner(System.in);
+                String answer = temp_ans.nextLine();
+
+                if (!answer.equals(securityA.get(accNum - 1))) {
+                    System.out.println("Password reset failed. Incorrect answer entered. Please try again another time.");
+                    passwordAttempts.set(accNum - 1, 0);
+                    menu_select();
+                } else {
+                    System.out.println("Please enter a new password:");
+                    Scanner new_pass = new Scanner(System.in);
+                    String newPassword = new_pass.nextLine();
+                    userPasswords.set(accNum - 1, newPassword);
+                    System.out.println("Successfully reset password. Returning to the main menu...");
+                    passwordAttempts.set(accNum - 1, 0);
+                    Account temp_account = (Account) users.get(accNum - 1);
+                    temp_account.passResetLog();
                     menu_select();
                 }
             }
@@ -202,8 +253,7 @@ class Account {
         - balance
 		- account number
 		- transaction log (ArrayList)
-	Class variable initialized for the number of accounts. You should
-	use this number to help assign a unique account number.
+	Class variable initialized for the number of accounts.
 	*/
 
     private double balance;
@@ -224,7 +274,7 @@ class Account {
     }
 
     public int get_acct_num() {
-        // Accessor; return the account's number.
+        // Accessor; returns the account's number.
         return accountNumber;
     }
 
@@ -247,14 +297,13 @@ class Account {
         /*
         Mutator; withdraws the specified amount, amt, from
 		the account balance if the amt will not overdraw
-		from the account. lso added to transaction log (ArrayList<String>)
+		from the account. Also added to transaction log (ArrayList<String>)
 		*/
-        if (amt > get_acct_bal()){
+        if (amt > get_acct_bal()) {
             System.out.println("The specified withdrawal amount exceeds your account balance.");
             System.out.println("Returning to main menu...");
             return;
-        }
-        else{
+        } else {
             balance -= amt;
             transactions.add("$" + amt + " was withdrawn.");
             System.out.println("$" + amt + " was withdrawn.");
@@ -275,5 +324,10 @@ class Account {
         for (String logs : transactions) {
             System.out.println(logs);
         }
+    }
+
+    public void passResetLog() {
+        //Logs the moment relative to transaction occurrences in which the account password was reset.
+        transactions.add("Password was reset here.");
     }
 }
