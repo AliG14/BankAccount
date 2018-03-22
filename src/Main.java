@@ -120,7 +120,7 @@ class ManageBank {
         if (choice == 1) {
             transact_acct();
         } else if (choice == 2) {
-            welcome();
+            menu_select();
         } else {
             System.out.println("Sorry, the option you entered is invalid. Exiting to main menu.");
             menu_select();
@@ -195,14 +195,13 @@ class ManageBank {
                 to reset password.
                  */
                 System.out.println("You have entered the wrong password three times. Answer the security question to reset your password:");
-                System.out.print(securityQ.get(accNum - 1) + ": ");
+                System.out.println(securityQ.get(accNum - 1) + ":");
 
                 Scanner temp_ans = new Scanner(System.in);
                 String answer = temp_ans.nextLine();
 
                 if (!answer.equals(securityA.get(accNum - 1))) {
                     System.out.println("Password reset failed. Incorrect answer entered. Please try again another time.");
-                    passwordAttempts.set(accNum - 1, 0);
                     menu_select();
                 } else {
                     System.out.print("Please enter a new password: ");
