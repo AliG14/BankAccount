@@ -204,7 +204,7 @@ class ManageBank {
                     System.out.println("Password reset failed. Incorrect answer entered. Please try again another time.");
                     /*
                     Normally, the next line of code would not be included, but since there is no cool-down
-                    on password attempts, it's best to give the user another chance on the password. 
+                    on password attempts, it's best to give the user another chance on the password.
                      */
                     passwordAttempts.set(accNum-1, 0);
                     menu_select();
